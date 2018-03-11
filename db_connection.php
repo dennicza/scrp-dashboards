@@ -4,7 +4,7 @@ function dbConnection () {
 	$host = 'ashost.mysql.tools';
 	$dbname = 'ashost_camp';
 	$user = 'ashost_camp';
-	$pass = 'd29bfdgs';
+	$pass = '_______';
 	$encoding = 'utf8';
 	
 	$dsn = "mysql:host=$host;dbname=$dbname;charset=$encoding";
