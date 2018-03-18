@@ -23,5 +23,9 @@ $(document).ready(function(){
          if (obj == '') return;
          JSONToCSVConvertor(obj, table, true);
      });
+
+    $('#go2add').click(function(){
+        window.location.assign (window.location.href + 'add.php');
+    });
  
  });

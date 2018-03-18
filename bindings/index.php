@@ -2,7 +2,7 @@
     date_default_timezone_set ('Europe/Kiev');
     require_once 'functions.php';
     $DBH = dbConnection ();
-    $table = 'competitors';
+    $table = 'bindings';
 ?>
 
 <!DOCTYPE html>
@@ -12,6 +12,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/edit.css">
 </head>
 <body data-table="<?php echo $table; ?>">
 
@@ -21,12 +23,13 @@
 
     <div class="container-fluid">
         <?php
-            print_r ( renderCompetitors( getTable( $DBH, $table ) ) );
+            print_r ( renderBindings( getTable( $DBH, $table ) ) );
         ?>
     </div>
 
     <nav class="navbar fixed-bottom navbar-light bg-light">
-        <button type="button" class="btn btn-outline-primary" id="download">Download</button>
+        <button type="button" class="btn btn-outline-primary" id="download">Імпортувати в Excel</button>
+        <button type="button" class="btn btn-outline-info" id="go2add">Додати зв'язування</button>
     </nav>
 
     <?php
