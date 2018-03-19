@@ -28,7 +28,7 @@
     </div>
 
     <nav class="navbar fixed-bottom navbar-light bg-light">
-        <button type="button" class="btn btn-outline-primary" id="download">Імпортувати в Excel</button>
+        <button type="button" class="btn btn-outline-primary" id="download">Експортувати в Excel</button>
         <button type="button" class="btn btn-outline-info" id="go2add">Додати зв'язування</button>
     </nav>
 

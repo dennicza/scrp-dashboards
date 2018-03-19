@@ -1,0 +1,25 @@
+#customFile .custom-file-control:lang(uk)::after {
+    content: "Файл для імпорту...";
+}
+
+#customFile .custom-file-control:lang(uk)::before {
+    content: "Обрати";
+}
+
+/*when a value is selected, this class removes the content */
+.custom-file-control.selected:lang(uk)::after {
+    content: "" !important;
+}
+
+.custom-file {
+    overflow: hidden;
+}
+.custom-file-control {
+    white-space: nowrap;
+}
+
+#upload {
+    margin-top: -31px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
