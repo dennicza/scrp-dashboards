@@ -48,6 +48,18 @@ function getTable($DBH, $table) {
 					WHERE b.is_active = 1";
 					// LEFT JOIN branches e ON c.branch_id = e.id";
 			break;
+		case 'monitoring':
+			$sql = "SELECT a.id monit_id, b.name comp_name, a.comp_id,
+							c.name dep_name, a.dep_id, c.branch_id,
+							b.url url,
+							a.week_day, a.wd, a.frequency,
+							(SELECT DATE_ADD((SELECT DATE_ADD(CURDATE(), INTERVAL (SELECT (MOD(7 + a.week_day - WEEKDAY(CURDATE()), 7))) DAY)), INTERVAL (SELECT MOD(DATEDIFF((SELECT DATE_ADD(CURDATE(), INTERVAL (SELECT (MOD(7 + a.week_day - WEEKDAY(CURDATE()), 7))) DAY)), DATE(a.start_at)), a.dist)) DAY)) as start_next,
+							a.is_active, (SELECT COUNT(bindings.id) FROM bindings WHERE bindings.comp_id = b.id AND bindings.dep_id = c.id AND bindings.is_active = 1) as active
+					FROM monitoring a
+					LEFT JOIN competitors b ON a.comp_id = b.id
+					LEFT JOIN departments c ON a.dep_id = c.id
+					WHERE b.is_active = 1";
+			break;
 		default:
 			$sql = "SELECT * FROM {$table}";
 			break;
