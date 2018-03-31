@@ -2,7 +2,7 @@
     date_default_timezone_set ('Europe/Kiev');
     require_once 'functions.php';
     $DBH = dbConnection ();
-    $table = 'bindings';
+    $table = 'monitoring';
 ?>
 
 <!DOCTYPE html>
@@ -23,13 +23,13 @@
 
     <div class="container-fluid">
         <?php
-            print_r ( renderBindings( getTable( $DBH, $table ) ) );
+            print_r ( renderMonitorings( getTable( $DBH, $table ) ) );
         ?>
     </div>
 
     <nav class="navbar fixed-bottom navbar-light bg-light">
         <button type="button" class="btn btn-outline-primary" id="download">Експортувати в Excel</button>
-        <button type="button" class="btn btn-outline-info" id="go2add">Додати зв'язування</button>
+        <button type="button" class="btn btn-outline-info" id="go2add">Додати моніторинг</button>
     </nav>
 
     <?php
@@ -44,7 +44,6 @@
     
     <script src="../js/bootstrap.js"></script>
     <script src="../js/filters.js"></script>
-    
     <script src="../js/date.js"></script>
     <script src="../js/xls.js"></script>
 
