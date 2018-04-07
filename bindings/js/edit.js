@@ -34,6 +34,10 @@ $(document).ready(function(){
 
         upd2db(data);
     });
+
+    $('#cancel').on('click', function() {
+        window.location.assign('/bindings/');
+    });
 });
 
 
@@ -46,8 +50,8 @@ function upd2db(data) {
 
         success: function(data){
             if (data > 0) {
-                alert ("Зв'язування було онвлено\n\nВдалої роботи!");
-                document.location.reload(true);
+                alert ("Запис було оновлено\n\nВдалої роботи!");
+                window.location.assign('/bindings/');
             } else {
                 alert ("При оновленні виникла помилка\n\nСпробуйте повторити збереження пізніше");
             }

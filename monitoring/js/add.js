@@ -19,6 +19,10 @@ $(document).ready(function(){
 
         save2db(data);
     });
+
+    $('#cancel').on('click', function() {
+        window.location.assign('/monitoring/');
+    });
 });
 
 
@@ -33,8 +37,8 @@ function save2db(data) {
         success: function(data){
 // console.log (data);
             if (data > 0) {
-                alert ("Моніторинг було збережено\n\nВдалої роботи!");
-                document.location.reload(true);
+                alert ("Запис було збережено\n\nВдалої роботи!");
+                window.location.assign('/monitoring/');
             } else {
                 alert ("При збереженні виникла помилка\n\nСпробуйте повторити збереження пізніше");
             }

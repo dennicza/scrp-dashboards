@@ -1,9 +1,9 @@
 $(document).ready(function() {
-   $('#cancel').on('click', function() {
+   $('#go2login').on('click', function() {
        window.location.assign('/login/');
    });
 
-   $('#save').on('click', function() {
+   $('#register').on('click', function() {
         var save_btn = $(this);
         save_btn.prop('disabled', true);
 

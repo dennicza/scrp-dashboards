@@ -45,7 +45,7 @@ function getTable($DBH, $table) {
 					LEFT JOIN competitors b ON a.comp_id = b.id
 					LEFT JOIN departments c ON a.dep_id = c.id
 					LEFT JOIN all_goods d ON a.g_comp_id = d.id
-					WHERE b.is_active = 1";
+					WHERE b.is_active = 1 AND a.is_deleted = 0";
 					// LEFT JOIN branches e ON c.branch_id = e.id";
 			break;
 		case 'monitoring':
@@ -53,12 +53,16 @@ function getTable($DBH, $table) {
 							c.name dep_name, a.dep_id, c.branch_id,
 							b.url url,
 							a.week_day, a.wd, a.frequency,
-							(SELECT DATE_ADD((SELECT DATE_ADD(CURDATE(), INTERVAL (SELECT (MOD(7 + a.week_day - WEEKDAY(CURDATE()), 7))) DAY)), INTERVAL (SELECT MOD(DATEDIFF((SELECT DATE_ADD(CURDATE(), INTERVAL (SELECT (MOD(7 + a.week_day - WEEKDAY(CURDATE()), 7))) DAY)), DATE(a.start_at)), a.dist)) DAY)) as start_next,
+							
+							/*(SELECT DATE_ADD((SELECT DATE_ADD(CURDATE(), INTERVAL (SELECT (MOD(7 + a.week_day - WEEKDAY(CURDATE()), 7))) DAY)), INTERVAL (SELECT MOD(DATEDIFF((SELECT DATE_ADD(CURDATE(), INTERVAL (SELECT (MOD(7 + a.week_day - WEEKDAY(CURDATE()), 7))) DAY)), DATE(a.start_at)), a.dist)) DAY)) as start_next,*/
+
+							(SELECT IF (CURDATE() < start_0, start_0, IF (CURDATE() < start_at, start_at, (SELECT DATE_ADD((SELECT DATE_ADD(CURDATE(), INTERVAL (SELECT (MOD(7 + week_day - WEEKDAY(CURDATE()), 7))) DAY)), INTERVAL (SELECT MOD(DATEDIFF((SELECT DATE_ADD(CURDATE(), INTERVAL (SELECT (MOD(7 + week_day - WEEKDAY(CURDATE()), 7))) DAY)), DATE(start_at)), dist)) DAY)))))  as start_next,
+
 							a.is_active, (SELECT COUNT(bindings.id) FROM bindings WHERE bindings.comp_id = b.id AND bindings.dep_id = c.id AND bindings.is_active = 1) as active
 					FROM monitoring a
 					LEFT JOIN competitors b ON a.comp_id = b.id
 					LEFT JOIN departments c ON a.dep_id = c.id
-					WHERE b.is_active = 1";
+					WHERE b.is_active = 1 AND a.is_deleted = 0";
 			break;
 		default:
 			$sql = "SELECT * FROM {$table}";
@@ -70,6 +74,19 @@ function getTable($DBH, $table) {
 	$STH = null;
 
 	return $rows;
+}
+
+function isUAC ($DBH) {
+	$cred = $_SESSION ['cred'];
+	if (!empty($cred) && strlen($cred)==32) {
+		$sql = "SELECT id, role FROM users WHERE sess = '{$cred}'";
+		$STH = $DBH->query($sql);
+		$user = $STH->fetchAll(PDO::FETCH_ASSOC);
+		$STH = null;
+		
+		return $user[0]['id'];
+	}
+	return 0;
 }
 
 ?>

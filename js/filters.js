@@ -24,6 +24,7 @@ function renderTable(fltrd) {
 
         success: function(data){
             $("#render").html(data);
+            tableRows ();
         },
 
         error: function(error){
@@ -31,6 +32,18 @@ function renderTable(fltrd) {
             console.log(error);
         }
     });
+}
+
+function tableRows() {
+    $('tr').on('click', function() {
+        if($(this).hasClass('active')){
+            $(this).removeClass('active'); 
+        } else {
+            $(this).addClass('active').siblings().removeClass('active');
+        }
+    });
+
+    $('tr').css('cursor', 'pointer');
 }
 
 $(document).ready(function(){

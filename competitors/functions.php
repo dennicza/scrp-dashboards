@@ -1,6 +1,5 @@
 <?php
-date_default_timezone_set ('Europe/Kiev');
-require_once '../db_connection.php';
+require_once '../functions.php';
 
 function renderFilters () {
     $mapFilter = array (
@@ -72,6 +71,5 @@ function renderCompetitors($arr) {
 
   return $msg;
 }
-
 
 ?>

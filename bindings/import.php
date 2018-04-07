@@ -1,7 +1,9 @@
 <?php
-	date_default_timezone_set ('Europe/Kiev');
 	require_once 'ajax_imp.php';
 	$DBH = dbConnection ();
+
+	if (!isUAC($DBH)) header('Location: http://' . $_SERVER['HTTP_HOST'] . '/login');
+
     $table = 'bindings';
 ?>
 
@@ -23,7 +25,7 @@
 					<input type="file" class="custom-file-input" id="exampleInputFile" aria-describedby="fileHelp" name="sortpic">
 					<span class="custom-file-control form-control-file"></span>
 				</label>
-				<button type="button" class="btn btn-outline-info" id="upload">Завантажити</button>
+				<button type="button" class="btn btn-outline-info" id="upload">Завантажити файл 'bindings.xls'</button>
 			</div>
 			<div class="col-md-6">
 				<button type="button" class="btn btn-outline-primary" id="import">Імпортувати з Excel</button>

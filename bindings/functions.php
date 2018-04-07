@@ -1,6 +1,5 @@
 <?php
-date_default_timezone_set ('Europe/Kiev');
-require_once '../db_connection.php';
+require_once '../functions.php';
 
 function renderFilters () {
     $mapFilter = array (
@@ -33,12 +32,20 @@ function renderBindingsBody($arr) {
 	$msg = '';
 	$i = 1;
 	foreach ($arr as $row) {
-		$msg .= '  <tr>'."\r\n";
-		$msg .= '	<th scope="row" class="edit">'.$i++;
-		$msg .= '<a href="/bindings/edit.php?';
+		$msg .= '  <tr id="r'.$row['bind_id'].'" data-edit="';
 		$msg .= 'bind_id='.$row['bind_id'].'&dep_id='.$row['dep_id'];
 		$msg .= '&comp_id='.$row['comp_id'].'&g_comp_id='.$row['g_comp_id'];
-		$msg .= '" class="pencil"><i class="fa fa-pencil fa-lg"></i></a></th>'."\r\n";
+		$msg .= '">'."\r\n";
+
+
+		$msg .= '	<th scope="row" class="edit">'.$i++;
+		
+		// $msg .= '<a href="/bindings/edit.php?';
+		// $msg .= 'bind_id='.$row['bind_id'].'&dep_id='.$row['dep_id'];
+		// $msg .= '&comp_id='.$row['comp_id'].'&g_comp_id='.$row['g_comp_id'];
+		// $msg .= '" class="pencil"><i class="fa fa-pencil fa-lg"></i></a>';
+		
+		$msg .= '	</th>'."\r\n";
 
 		$msg .= '	<td>'.$row['comp_name'].'</td>'."\r\n";
 		$msg .= '	<td>'.$row['comp_id'].'</td>'."\r\n";
@@ -99,81 +106,6 @@ function renderBindings($arr) {
   return $msg;
 }
 
-function getCompetitors($DBH) {
-	$sql = "SELECT id, name FROM competitors WHERE is_active = 1";
-	$STH = $DBH->query($sql);
-	$rows = $STH->fetchAll(PDO::FETCH_NUM);
-	$STH = null;
-
-	return $rows;
-}
-
-function getDepartments($DBH) {
-	$sql = "SELECT id, name FROM departments WHERE 	is_deleted = 0";
-	$STH = $DBH->query($sql);
-	$rows = $STH->fetchAll(PDO::FETCH_NUM);
-	$STH = null;
-
-	return $rows;
-}
-
-function getGCompet($DBH, $comp_id) {
-	if (!$comp_id) {
-		$sql = "SELECT id FROM competitors WHERE is_active = 1";
-		$STH = $DBH->query($sql);
-		$res = $STH->fetchAll(PDO::FETCH_ASSOC);
-		$comp_id = $res[0]['id'];
-	}
-	$sql = "SELECT id, name FROM all_goods WHERE comp_id = '{$comp_id}'";
-	$STH = $DBH->query($sql);
-	$rows = $STH->fetchAll(PDO::FETCH_NUM);
-	$STH = null;
-
-	return $rows;
-}
-
-function renderDDL($arr, $selected, $id, $name, $error) {
-	$msg = "<label for=\"{$id}\">{$name}</label>\r\n";
-	$msg .= "<select class=\"custom-select d-block w-100\" id=\"{$id}\" required=\"\">\r\n";
-	if ($selected > 0) {
-		foreach ($arr as $row) {
-			if ($selected == $row[0]) {
-				$msg .= "<option value=\"{$row[0]}\" selected=\"\">{$row[1]}</option>\r\n";
-			} else {
-				$msg .= "<option value=\"{$row[0]}\">{$row[1]}</option>\r\n";
-			}
-		}
-	} else {
-		foreach ($arr as $row) {
-			$msg .= "<option value=\"{$row[0]}\">{$row[1]}</option>\r\n";
-		}
-	}
-	
-	$msg .= "</select>\r\n";
-	$msg .= "<div class=\"invalid-feedback\">{$error}</div>\r\n";
-	
-	return $msg;
-}
-
-function renderInput ($id, $name, $value, $error) {
-	$msg = "<label for=\"{$id}\">{$name}</label>\r\n";
-	$msg .= "<input type=\"text\" class=\"form-control\" id=\"{$id}\" value=\"{$value}\" placeholder=\"\" required=\"\">\r\n";
-	$msg .= "<div class=\"invalid-feedback\">{$error}</div>\r\n";
-
-	return $msg;
-}
-
-function renderChbx ($id, $status, $label) {
-	$checked = '';
-	if ($status) $checked = 'checked=""';
-
-	$msg = "<div class=\"custom-control custom-checkbox\">\r\n";
-	$msg .= "	<input type=\"checkbox\" class=\"custom-control-input\" id=\"{$id}\" {$checked}>\r\n";
-	$msg .= "	<label class=\"custom-control-label\" for=\"{$id}\">{$label}</label>\r\n";
-	$msg .= "</div>\r\n";
-
-	return $msg;
-}
 
 function saveBinding ($DBH, $arr) {
 	$res = 0;

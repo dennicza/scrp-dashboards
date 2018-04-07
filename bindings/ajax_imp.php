@@ -1,5 +1,6 @@
 <?php
 header("Content-Type: text/html; charset=windows-1251");
+session_start ();
 date_default_timezone_set ('Europe/Kiev');
 require_once '../db_connection.php';
 // require_once ($_SERVER['DOCUMENT_ROOT'].'PHPExcel/PHPExcel.php');
@@ -62,8 +63,9 @@ function importBindings($DBH, $filename) {	//	should be used on page with header
 }
 
 if (isset($_POST['import'])) {
-    $DBH = dbConnection ();
-    $res = importBindings($DBH, 'bindings.xls');
+	$res = '';
+	$DBH = dbConnection ();
+	if (isUAC($DBH)) $res = importBindings($DBH, 'bindings.xls');
     $DBH = null;
 
     print_r ($res);
