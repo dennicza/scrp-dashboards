@@ -141,7 +141,7 @@ function getGCompet($DBH, $comp_id) {
 		$res = $STH->fetchAll(PDO::FETCH_ASSOC);
 		$comp_id = $res[0]['id'];
 	}
-	$sql = "SELECT id, name FROM all_goods WHERE comp_id = '{$comp_id}'";
+	$sql = "SELECT id, name FROM all_goods WHERE comp_id = '{$comp_id}' ORDER BY name ASC";
 	$STH = $DBH->query($sql);
 	$rows = $STH->fetchAll(PDO::FETCH_NUM);
 	$STH = null;

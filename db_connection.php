@@ -56,13 +56,28 @@ function getTable($DBH, $table) {
 							
 							/*(SELECT DATE_ADD((SELECT DATE_ADD(CURDATE(), INTERVAL (SELECT (MOD(7 + a.week_day - WEEKDAY(CURDATE()), 7))) DAY)), INTERVAL (SELECT MOD(DATEDIFF((SELECT DATE_ADD(CURDATE(), INTERVAL (SELECT (MOD(7 + a.week_day - WEEKDAY(CURDATE()), 7))) DAY)), DATE(a.start_at)), a.dist)) DAY)) as start_next,*/
 
-							(SELECT IF (CURDATE() < start_0, start_0, IF (CURDATE() < start_at, start_at, (SELECT DATE_ADD((SELECT DATE_ADD(CURDATE(), INTERVAL (SELECT (MOD(7 + week_day - WEEKDAY(CURDATE()), 7))) DAY)), INTERVAL (SELECT MOD(DATEDIFF((SELECT DATE_ADD(CURDATE(), INTERVAL (SELECT (MOD(7 + week_day - WEEKDAY(CURDATE()), 7))) DAY)), DATE(start_at)), dist)) DAY)))))  as start_next,
+							(SELECT IF (CURDATE() <= start_0, start_0, IF (CURDATE() <= start_at, start_at, (SELECT DATE_ADD((SELECT DATE_ADD(CURDATE(), INTERVAL (SELECT (MOD(7 + week_day - WEEKDAY(CURDATE()), 7))) DAY)), INTERVAL (SELECT MOD(DATEDIFF((SELECT DATE_ADD(CURDATE(), INTERVAL (SELECT (MOD(7 + week_day - WEEKDAY(CURDATE()), 7))) DAY)), DATE(start_at)), dist)) DAY)))))  as start_next,
 
 							a.is_active, (SELECT COUNT(bindings.id) FROM bindings WHERE bindings.comp_id = b.id AND bindings.dep_id = c.id AND bindings.is_active = 1) as active
 					FROM monitoring a
 					LEFT JOIN competitors b ON a.comp_id = b.id
 					LEFT JOIN departments c ON a.dep_id = c.id
 					WHERE b.is_active = 1 AND a.is_deleted = 0";
+			break;
+		case 'results':
+			$sql = "SELECT DATE(a.dt) monitoring_date,
+							d.name comp_name, b.comp_id comp_id,
+							e.name dep_name, e.id dep_id,
+							e.branch_id branch_id,
+							b.g_inner_id g_inner_id, b.g_inner_name g_inner_name,
+							f.g_merch_name g_comp_name, a.competitor_price g_comp_price,
+							a.is_available, a.identity, a.is_promo
+					FROM results a
+					LEFT JOIN bindings b ON a.binding_id = b.id
+					LEFT JOIN monitoring c ON a.monitoring_id = b.id
+					LEFT JOIN competitors d ON b.comp_id = d.id
+					LEFT JOIN departments e ON b.dep_id = e.id
+					LEFT JOIN all_goods f ON b.g_comp_id = f.id";
 			break;
 		default:
 			$sql = "SELECT * FROM {$table}";

@@ -25,7 +25,7 @@
 			</div>
 			
 			<div class="form-group col-md-12">
-				<button type="button" class="btn btn-link" disabled id="results">Результати моніторингів</button>
+				<button type="button" class="btn btn-link" id="results">Результати моніторингів</button>
 			</div>
 			<div class="form-group col-md-12">
 				<button type="button" class="btn btn-link" disabled id="stat">Статус монітор</button>
