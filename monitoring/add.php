@@ -8,10 +8,18 @@
     $subtitle = 'Add item';
 ?>
 
-
 <?php echo renderHeader ($table, $subtitle); ?>
 
-    <div class="container-fluid">
+<?php echo renderNav(); ?>
+
+<?php
+    $qr = '';
+    foreach ($_GET as $key => $value) {
+        $qr .= '&' . $key . '=' . $value;
+    }
+?>
+
+    <div class="container-fluid under_nav">
         <div class="row">
             <div class="col-md-6 mt-3">
                 <?php echo renderDDL(getCompetitors($DBH), 0, 'comp_id', 'Конкуренти', 'Треба обрати конкурента зі списку'); ?>
@@ -43,8 +51,8 @@
     </div>
 
     <nav class="navbar fixed-bottom navbar-light bg-light">
-        <button type="button" class="btn btn-outline-primary" id="save2db">Зберегти запис</button>
-        <button type="button" class="btn btn-outline-warning" id="cancel">Відміна</button>
+        <button type="button" class="btn btn-outline-primary" id="save2db" data-query="<?php echo substr($qr, 1); ?>">Зберегти запис</button>
+        <button type="button" class="btn btn-outline-warning" id="cancel" data-query="<?php echo substr($qr, 1); ?>">Скасувати</button>
     </nav>
 
 <?php $DBH = null; ?>

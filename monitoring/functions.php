@@ -1,10 +1,9 @@
 <?php
 require_once '../functions.php';
 
-function renderFilters () {
+function renderFilters ($DBH) {
     $mapFilter = array (
 		'comp_name' => 'Конкурент',
-		
 		'branch_id' => 'Відділ',
 		'dep_name' => 'Департамент',
 		
@@ -13,45 +12,41 @@ function renderFilters () {
 		'start_next' => 'Дата наступного моніторингу',
 		
         'is_active' => 'Статус активності моніторингу'
-    );
+	);
+	
+	$fieldsType  = array (
+		'comp_name' => 'select',
+		'branch_id' => 'select',
+		'dep_name' => 'select',
+		
+		'frequency' => 'input',
+		'wd' => 'select2',
+		'start_next' => 'datepicker',
+		
+		'is_active' => 'select2'
+	);
     
     $msg = "";
     foreach ($mapFilter as $key => $value) {
-        $msg .= "<div class=\"input-group input-group-sm mb-1\">\r\n";
-        $msg .= "    <div class=\"input-group-prepend\">\r\n";
-        $msg .= "        <span class=\"input-group-text\">{$value}</span>\r\n";
-        $msg .= "    </div>\r\n";
-        $msg .= "    <input type=\"text\" class=\"form-control filter\" id=\"{$key}\" aria-describedby=\"basic-addon3\">\r\n";
-        $msg .= "    <div class=\"input-group-append\">\r\n";
-        $msg .= "       <button class=\"btn btn-outline-secondary clear\" data-clear=\"{$key}\" type=\"button\">Очистити</button>\r\n";
-        $msg .= "   </div>\r\n";
-        $msg .= "</div>\r\n";
+		$msg .= typeFilter ($DBH, $fieldsType[$key], $key, $value);
     }
 
     return $msg;
 }
 
-function renderMonitoringsBody($arr) {
+function renderBody($arr, $page, $pp = 500) {
+	if (!$page) $page = 1;
+	$from = 1 + ($page - 1) * $pp;
+
 	$msg = '';
-	$i = 1;
+	$i = $from;
 	foreach ($arr as $row) {
-		$msg .= '  <tr id="r'.$row['bind_id'].'" data-edit="';
+		$msg .= '  <tr id="r'.$row['monit_id'].'" data-edit="';
 		$msg .= 'monit_id='.$row['monit_id'].'&dep_id='.$row['dep_id'];
 		$msg .= '&comp_id='.$row['comp_id'];
 		$msg .= '">'."\r\n";
 
-		$msg .= '	<th scope="row" class="edit">'.$i++;
-		
-		/*
-		$msg .= '  <tr>'."\r\n";
-		$msg .= '	<th scope="row" class="edit">'.$i++;
-		$msg .= '<a href="/monitoring/edit.php?';
-		$msg .= 'monit_id='.$row['monit_id'].'&dep_id='.$row['dep_id'];
-		$msg .= '&comp_id='.$row['comp_id'];
-		$msg .= '" class="pencil"><i class="fa fa-pencil fa-lg"></i></a></th>'."\r\n";
-		*/
-
-		$msg .= '	</th>'."\r\n";
+		$msg .= '	<th scope="row" class="edit">'.$i++.'</th>'."\r\n";
 
 		$msg .= '	<td>'.$row['comp_name'].'</td>'."\r\n";
 		$msg .= '	<td>'.$row['branch_id'].'</td>'."\r\n";
@@ -71,7 +66,7 @@ function renderMonitoringsBody($arr) {
 					<td></td><td></td><td></td><td></td><td></td></tr>' . "\r\n";
 }
 
-function renderMonitorings($arr) {
+function renderTable($arr, $page, $pp = 500) {
 	$mapTable = array (
 		'comp_name' => 'Конкурент',
 		'branch_id' => 'Відділ',
@@ -100,14 +95,13 @@ function renderMonitorings($arr) {
 	$msg .= '</thead>'."\r\n";
 	$msg .= '<tbody  id="render">'."\r\n";
 	
-	$msg .= renderMonitoringsBody($arr);
+	$msg .= renderBody($arr, $page, $pp);
 
 	$msg .= '</tbody>'."\r\n";
 	$msg .= '</table>'."\r\n";
 
   return $msg;
 }
-
 
 function saveMonitoring ($DBH, $arr) {
 	$res = 0;

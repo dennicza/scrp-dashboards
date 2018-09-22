@@ -12,7 +12,7 @@ if (isUAC($DBH)) {
 	} else 
 
 	if (isset($_POST['render'])) {
-		echo renderResultsBody($_POST['render']);
+		echo renderBody($_POST['render'], 1);
 	}
 }
 

@@ -1,0 +1,22 @@
+.centered {
+    margin: auto;
+}
+
+/*  for pages w/ `pass to EDIT` functionality */
+
+.edit {
+    position: relative;
+}
+
+.edit:hover .pencil {
+    display: block;
+}
+
+.pencil {
+    padding-top: 10px;	
+    padding-right: 2px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: none;
+}

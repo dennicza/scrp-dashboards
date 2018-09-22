@@ -12,6 +12,9 @@
     <div class="container-fluid">
         <div class="row mt-5">
 			<div class="form-group col-md-12">
+				<button type="button" class="btn btn-link" id="aggregators">Прайс-агрегатори</button>
+			</div>
+			<div class="form-group col-md-12">
 				<button type="button" class="btn btn-link" id="competitors">Конкуренти</button>
 			</div>
 			<div class="form-group col-md-12">
@@ -28,7 +31,7 @@
 				<button type="button" class="btn btn-link" id="results">Результати моніторингів</button>
 			</div>
 			<div class="form-group col-md-12">
-				<button type="button" class="btn btn-link" disabled id="stat">Статус монітор</button>
+				<button type="button" class="btn btn-link" id="stat">Статус монітор</button>
 			</div>
         </div>
 	</div>
@@ -39,4 +42,4 @@
 
 <?php $DBH = null; ?>
 
-<?php echo renderFooter ($table); ?>
+<?php echo renderFooter0 (); ?>
